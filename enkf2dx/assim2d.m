@@ -13,7 +13,7 @@ function XA = assim2d(ens,obs,m_f,ass_f)
     [nx,ny,nvar,N] = size(ens);
     rl = size(obs,3);
     XA = zeros(nx,ny,nvar,rl);
-    fprintf('Assimilation run, %g cycles\n',rl);
+    fprintf('assimilation run, %g cycles\n',rl);
     for rl_ind = 1:rl
         fprintf('.')
         ens = ass_f(ens,squeeze(obs(:,:,rl_ind)));
