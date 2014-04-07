@@ -1,4 +1,3 @@
-function [X]=waterwave2(X,dt,dx,dy,nsteps)
 % WATERWAVE   2D Shallow Water Model
 %
 % Lax-Wendroff finite difference method.
@@ -15,21 +14,19 @@ function [X]=waterwave2(X,dt,dx,dy,nsteps)
 %    http://www.amath.washington.edu/~dgeorge/tsunamimodeling.html
 %    http://www.amath.washington.edu/~claw/applications/shallow/www
 %
+%    originally written by J. Mandel
 %
-%   originally written by J. Mandel
-%%
-%
-%  
-%
-%
-%   X(:,:,1)          water height
-%   X(:,:,2)         X momentum
-%   X(:,:,3)          Y momentum
-%   dt          timestep
+%   function [X]=waterwave2(X,dt,dx,dy,nsteps)
+%   
+%   X(:,:,1)    - water height
+%   X(:,:,2)    - X momentum
+%   X(:,:,3)    - Y momentum
+%   dt          - timestep
 %   dx          
 %   dy
 %   nsteps      number of time steps
 
+function [X]=waterwave2(X,dt,dx,dy,nsteps)
    g = 9.8;                 % gravitational constant
    n = size(X,2);          %grid size, must by n x n
    % extend state variables for boundary conditions
