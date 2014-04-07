@@ -1,24 +1,25 @@
-
 %%
-%   EnKF with observation of entire state. 
+%   EnKF with observation of entire one variable. 
 %
 %   Implemenation based on J. Mandel: A  Brief Tutorial on 
 %   the Ensemble Kalman Filter 
 %   http://arxiv.org/abs/0901.3725
+%   
+%   Full algorithm (protected access): 
+%   http://mathweb.ucdenver.edu/~wikiuser/grantwiki/doku.php?id=spectral_enkf_for_multidimensional_data
 %
-%
-%   function XA=enkf2dx(XF,d,r,i,Qx,QY)
+%   function XA=enkf2dx(XF,d,r,i,trans_f,itrans_f)
 %
 %   XF - forecast ensemble
 %   d - observed data (matrix)
 %   r - variance of observed data - covariance matrix of observed data is
 %   then r*I
 %   i - index of observed variable
-%   Qx - transformation matrix for rows
-%   Qy - transformation matrix for columns
+%   trans_f - function handle -  2D transformation  
+%   itrans_f - function handle - 2D inverse transformation
 %  
 %%
-function XA=enkf2dx(XF,d,r,i,Qx,Qy)
+function XA=enkf2dx(XF,d,r,i,trans_f,itrans_f)
     % nx,ny - grid dimension
     % N - number of ensemble members
     [nx,ny,m,N] = size(XF);
@@ -28,13 +29,13 @@ function XA=enkf2dx(XF,d,r,i,Qx,Qy)
     % transform ensemble to spectral space
     for ens_ind = 1:N
         for m_ind = 1:m
-            X(:,:,m_ind,ens_ind)=Qx*squeeze(XF(:,:,m_ind,ens_ind))*Qy.';
+            X(:,:,m_ind,ens_ind)=trans_f(squeeze(XF(:,:,m_ind,ens_ind)));
         end
     end
     X = pack_state(X);
     
     % transform, pack and perturbate data to spectral space
-    D = repmat(pack_state(Qx*d*Qy.'),1,N)+randn(nx*ny,N)*sqrt(r);
+    D = repmat(pack_state(trans_f(d)),1,N)+randn(nx*ny,N)*sqrt(r);
     
     % i-th variable row from
     ri_f = (i-1)*nx*ny+1; 
@@ -57,8 +58,8 @@ function XA=enkf2dx(XF,d,r,i,Qx,Qy)
     XA = unpack_state(X,nx,ny);
     for ens_ind = 1:N
         for m_ind = 1:m
-            XA(:,:,m_ind,ens_ind)=Qx'*squeeze(XA(:,:,m_ind,ens_ind))*conj(Qy);
+            XA(:,:,m_ind,ens_ind)=itrans_f(squeeze(XA(:,:,m_ind,ens_ind)));
         end
     end
-    XA = real(XA);
+    %XA = real(XA);
 end
