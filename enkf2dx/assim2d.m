@@ -21,8 +21,6 @@ function XA = assim2d(ens,obs,m_f,ass_f)
         for ens_ind = 1:N
             ens(:,:,:,ens_ind) = m_f(squeeze(ens(:,:,:,ens_ind)));
         end 
-        if mod(rl_ind,10)==0
-            fprintf('\n');
-        end
     end 
+    fprintf('\n');
 end
