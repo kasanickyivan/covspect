@@ -4,7 +4,7 @@ nvar=3; %number of variables foe EnKF
 N=4;    %ensemble size
 %   paramaters for shallow water equations
 height=4;   
-dh=5;   %drop height
+dh=1;   %drop height
 dw=4;   %drop width
 ds=5;   %initial droplet start point
 dx=1;
@@ -32,8 +32,8 @@ Y(1+ds:dw+ds,1+ds:dw+ds,1,1)=squeeze(Y(1+ds:dw+ds,1+ds:dw+ds,1,1))+droplet(dh,dw
 %   drop is moved 
 Z(dw/2+1+ds:dw*1.5+ds,dw/2+1+ds:dw*1.5+ds,1,1)= ...
     squeeze(Z(dw/2+1+ds:dw*1.5+ds,dw/2+1+ds:dw*1.5+ds,1,1))+droplet(dh,dw);
-%
 %   first steps to initialize the state
+Z=Y;
 Y(:,:,:,1)=waterwave2(squeeze(Y(:,:,:,1)),dt,dx,dy,init_steps);
 Z(:,:,:,1)=waterwave2(squeeze(Z(:,:,:,1)),dt,dx,dy,init_steps);
 
@@ -50,20 +50,28 @@ end
 ens_init = repmat(squeeze(Z(:,:,:,1)),[1 1 1 N]) + randn(n,n,nvar,N)*0.1;
 % series of observation
 obs = squeeze(Y(:,:,1,:));
-fprintf('\nDST ');
+
+fprintf('DST ');
 Adst = assim2d(ens_init,obs,@(x) waterwave2(x,dt,dx,dy,ap),...
             @(x,y) enkf2dx(x,y,0.1,1,...
                 @(x) transf2d(x, @(x) dst_i(x)), ...
                 @(x) transf2d(x, @(x) dst_i(x))));
-fprintf('\nDCT ');
+
+fprintf('DCT ');
 Adct = assim2d(ens_init,obs,@(x) waterwave2(x,dt,dx,dy,ap),...
             @(x,y) enkf2dx(x,y,0.1,1,...
                 @(x) transf2d(x, @(x) dct_iv(x)), ...
                 @(x) transf2d(x, @(x) dct_iv(x))));
 
+fprintf('FFT ');
+Afft = assim2d(ens_init,obs,@(x) waterwave2(x,dt,dx,dy,ap),...
+            @(x,y) enkf2dx(x,y,0.1,1,...
+                @(x) transf2d(x, @(x) 1/n^0.5*fft(x)), ...
+                @(x) transf2d(x, @(x) n^0.5*ifft(x))));        
+
 qmf=MakeONFilter('Coiflet',2);
 L=4;
-fprintf('\nCoiflets ');
+fprintf('Coiflets ');
 Acoi = assim2d(ens_init,obs,@(x) waterwave2(x,dt,dx,dy,ap),...
             @(x,y) enkf2dx(x,y,0.1,1,...
                 @(x) transf2d(x, @(x) FWT_PO(x,L,qmf)), ...
@@ -75,24 +83,25 @@ figure('name','RMSE');
 rmse=zeros(3,nvar,rl);
 rmse(1,:,:) = enkf2dx_rmse(Adst,Y);
 rmse(2,:,:) = enkf2dx_rmse(Adct,Y);
-rmse(3,:,:) = enkf2dx_rmse(Acoi,Y);
-plot(squeeze(rmse(:,2,:))');
-legend('DST','DCT','Coi');
-
- 
-
-% Mask matrix
-%M = zeros(n,n);
-%M(2:5,2:5) = 1;
-%M(20:25,20:25) = 1;
- 
-%AFsg = assim2d(ens_init,obs,@(x) waterwave2(x,dt,dx,dy,ap),@(x,y) enkf2dx_sgo(x,y,M,0.1,1,F,F));
-%AWsg = assim2d(ens_init,obs,@(x) waterwave2(x,dt,dx,dy,ap),@(x,y) enkf2dx_sgo(x,y,M,0.1,1,W,W));
- 
-% figure('name','RMSE - subgrid observed');
-% rmse_sg = enkf2dx_rmse(AFsg,Y,AWsg);
-% plot(squeeze(rmse_sg(:,1,:))');
-% legend('FFT','Wav');
+rmse(3,:,:) = enkf2dx_rmse(Afft,Y);
+rmse(4,:,:) = enkf2dx_rmse(Acoi,Y);
+plot(squeeze(rmse(:,1,:))');
+legend('DST','DCT','FFT','Coi');
+% 
+%  
+% 
+% % Mask matrix
+% %M = zeros(n,n);
+% %M(2:5,2:5) = 1;
+% %M(20:25,20:25) = 1;
+%  
+% %AFsg = assim2d(ens_init,obs,@(x) waterwave2(x,dt,dx,dy,ap),@(x,y) enkf2dx_sgo(x,y,M,0.1,1,F,F));
+% %AWsg = assim2d(ens_init,obs,@(x) waterwave2(x,dt,dx,dy,ap),@(x,y) enkf2dx_sgo(x,y,M,0.1,1,W,W));
+%  
+% % figure('name','RMSE - subgrid observed');
+% % rmse_sg = enkf2dx_rmse(AFsg,Y,AWsg);
+% % plot(squeeze(rmse_sg(:,1,:))');
+% % legend('FFT','Wav');
  
  
 
