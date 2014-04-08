@@ -12,6 +12,6 @@ function X=transf2d(X,trans_f)
     end
     %apply transformation on rows
     for nx_ind = 1:nx
-        X(nx_ind,:) = trans_f(squeeze(X(nx_ind,:)));
+        X(nx_ind,:) = trans_f(transpose(squeeze(X(nx_ind,:))));
     end
 end
