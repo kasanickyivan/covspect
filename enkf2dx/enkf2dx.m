@@ -61,5 +61,6 @@ function XA=enkf2dx(XF,d,r,i,trans_f,itrans_f)
             XA(:,:,m_ind,ens_ind)=itrans_f(squeeze(XA(:,:,m_ind,ens_ind)));
         end
     end
-    %XA = real(XA);
+    
+    XA = real(XA);
 end

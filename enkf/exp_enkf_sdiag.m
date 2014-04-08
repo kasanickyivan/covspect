@@ -15,8 +15,11 @@ cov_diag = { @(XF) cov(XF'), ...
              @(XF) cov_xform(XF,wav_matrix(n,4,'Coiflet',2), eye(n)), ...
              @(XF) cov_xform(XF,wav_matrix(n,4,'Coiflet',4), eye(n)), ...
              @(XF) cov_xform(XF,wav_matrix(n,4,'Beylkin',2), eye(n)) };
-         
+
 cov_names = { 'Sample', 'DST', 'DCT', 'FFT', 'Coi-2', 'Coi-4', 'Bey' };
+
+cov_diag = cov_diag([1 3 4 6]);
+cov_names = cov_names([1 3 4 6]);
 
 RMSE = zeros(steps, length(cov_diag),reps);
 
@@ -35,3 +38,4 @@ figure('name', 'ENKF convergence vs. cov encoding');
 errorbar(repmat((1:steps)',1,length(cov_diag)), mean(RMSE,3), std(RMSE,[],3)/32^0.5, 'linewidth', 1.5);
 title('ENKF convergence vs. cov encoding', 'fontsize', 16);
 legend(cov_names);
+xlabel('# assimilation steps');
