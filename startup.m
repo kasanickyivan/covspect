@@ -9,6 +9,6 @@ addpath([pwd,'/enkf'])
 addpath([pwd,'/enkf2d'])
 addpath([pwd,'/enkf2dx'])
 addpath([pwd,'/wrf'])
-addpath([pwd,'/enkf3dx'])
+:%addpath([pwd,'/enkf3dx'])
 Wavelab_startup
 
