@@ -16,7 +16,7 @@ function [Hf,Uf,Vf]=waterwave(Hs,Us,Vs,dt,dx,dy,nsteps)
 %    http://www.amath.washington.edu/~claw/applications/shallow/www
 %
 %
-%   originally written by J. Mandel
+%   originally written by  Randy LeVeque
 %%
 %
 %  

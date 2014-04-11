@@ -14,7 +14,7 @@
 %    http://www.amath.washington.edu/~dgeorge/tsunamimodeling.html
 %    http://www.amath.washington.edu/~claw/applications/shallow/www
 %
-%    originally written by J. Mandel
+%    originally written by Randy LeVeque
 %
 %   function [X]=waterwave2(X,dt,dx,dy,nsteps)
 %   
