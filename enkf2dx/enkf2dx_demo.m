@@ -33,7 +33,6 @@ Y(1+ds:dw+ds,1+ds:dw+ds,1,1)=squeeze(Y(1+ds:dw+ds,1+ds:dw+ds,1,1))+droplet(dh,dw
 Z(dw/2+1+ds:dw*1.5+ds,dw/2+1+ds:dw*1.5+ds,1,1)= ...
     squeeze(Z(dw/2+1+ds:dw*1.5+ds,dw/2+1+ds:dw*1.5+ds,1,1))+droplet(dh,dw);
 %   first steps to initialize the state
-Z=Y;
 Y(:,:,:,1)=waterwave2(squeeze(Y(:,:,:,1)),dt,dx,dy,init_steps);
 Z(:,:,:,1)=waterwave2(squeeze(Z(:,:,:,1)),dt,dx,dy,init_steps);
 
@@ -85,7 +84,7 @@ rmse(1,:,:) = enkf2dx_rmse(Adst,Y);
 rmse(2,:,:) = enkf2dx_rmse(Adct,Y);
 rmse(3,:,:) = enkf2dx_rmse(Afft,Y);
 rmse(4,:,:) = enkf2dx_rmse(Acoi,Y);
-plot(squeeze(rmse(:,1,:))');
+plot(squeeze(rmse(:,2,:))');
 legend('DST','DCT','FFT','Coi');
 % 
 %  

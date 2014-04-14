@@ -7,6 +7,7 @@ addpath([pwd,'/Wavelab850'])
 addpath([pwd,'/enkf'])
 addpath([pwd,'/enkf2d'])
 addpath([pwd,'/enkf2dx'])
+addpath([pwd,'/waterwave'])
 addpath([pwd,'/wrf'])
 Wavelab_startup
 
