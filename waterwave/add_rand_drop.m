@@ -7,15 +7,16 @@
 %   dw_max - maximal width of drop to be added
 %   dw_min - minimal height of drop to be added
 %   dw_max - maximal height of drop to be added
+%   bdd - boundary drop distance - minimal distance between drop and borders 
 %
 %
 % output:
 %   Y - 2d array, water level
-function Y=add_rand_drop(Y,dw_min,dw_max,dh_min,dh_max)
+function Y=add_rand_drop(Y,dw_min,dw_max,dh_min,dh_max,bdd)
     [nx,ny] = size(Y);
     dw=round(rand*(dw_max-dw_min)+dw_min);
     dh=round(rand*(dh_max-dh_min)+dh_min);
-    df_x=round(rand*(nx-dw))+1; %drop from x coordinates
+    df_x=round(rand*(nx-dw-2*bdd))+1+bdd; %drop from x coordinates
     dt_x=df_x+dw-1; %drop to x coordinates 
     df_y=round(rand*(ny-dw))+1; %drop from y coordinates
     dt_y=df_y+dw-1; %drop to y coordinates 
