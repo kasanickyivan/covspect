@@ -10,7 +10,7 @@ function [cov,loc_cov,cor,loc_cor] = cov_cor_2d(Y)
     Y = pack_state(Y);
     % 
     Y = Y - repmat(mean(Y,2),1,reps);
-    var_index = cell(4,1);
+    var_index = cell(nvar,1);
     for var_ind = 1:nvar
         var_index{var_ind} = (1:n*n)+((var_ind-1)*n*n);
     end
