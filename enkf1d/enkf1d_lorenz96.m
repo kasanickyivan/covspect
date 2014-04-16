@@ -6,7 +6,7 @@
 %   ensemble size, length of run and type of covariance estimation could be set.   
 %
 %
-%   [XA,YA] = enkf_lorenz96(n,N,nsteps,f_cov_est)
+%   [XA,YA] = enkf1d_lorenz96(n,N,nsteps,f_cov_est)
 %
 %
 %   YA - true state
@@ -23,7 +23,7 @@
 
 
 
-function [XA,YA] = enkf_lorenz96(n,N,nsteps,f_cov_est)
+function [XA,YA] = enkf1d_lorenz96(n,N,nsteps,f_cov_est)
 
     % observation operator
     H=eye(n);
@@ -57,7 +57,7 @@ function [XA,YA] = enkf_lorenz96(n,N,nsteps,f_cov_est)
     YA=zeros(n,nsteps);
 
     for ar_ind = 1:nsteps
-        X=enkf(X,H,Y,r,f_cov_est);
+        X=enkf1d(X,H,Y,r,f_cov_est);
         XA(:,ar_ind)=mean(X,2);
         YA(:,ar_ind)=Y;
         for t_ind = 1:at

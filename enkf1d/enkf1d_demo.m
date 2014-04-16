@@ -16,5 +16,5 @@ run_length=65;
 F=fft_matrix(n);         %transformation matrix
 M=eye(n);                %mask matrix for covariance estimation in spectral space
 
-[XA,YA] = enkf_lorenz96(128,4,65,@(X) cov_xform(X,F,M));
+[XA,YA] = enkf1d_lorenz96(128,4,65,@(X) cov_xform(X,F,M));
 show_enkf(XA,YA);

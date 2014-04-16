@@ -7,7 +7,7 @@
 %   http://arxiv.org/abs/0901.3725
 %
 %
-%   function XA=enkf(XF,H,d,r,f_cov_est)
+%   function XA=enkf1d(XF,H,d,r,f_cov_est)
 %
 %   XF - forecast ensemble
 %   H - observation operator
@@ -17,7 +17,7 @@
 %   handle
 %%
 
-function XA=enkf(XF,H,d,r,f_cov_est)
+function XA=enkf1d(XF,H,d,r,f_cov_est)
     %   n - size of state
     %   N - number of enseble members
     N = size(XF,2);

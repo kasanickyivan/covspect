@@ -3,7 +3,7 @@
 %  Basic plotting function for 1D EnKF results.
 %
 %
-%   function show_enkf(XA,YA)
+%   function show_enkf1d(XA,YA)
 %
 %   XA - mean analysis ensemble 
 %   YA - true state
@@ -11,7 +11,7 @@
 
 
 
-function show_enkf(XA,YA)
+function show_enkf1d(XA,YA)
 
     figure('name','ENKF diagnostics')
     
