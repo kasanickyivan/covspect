@@ -28,7 +28,7 @@ for i=1:length(cov_diag)
     for j=1:reps
         fprintf('.');
         f_cov = cov_diag{i};
-        [XA,YA] = enkf_lorenz96(n,N,steps,f_cov);
+        [XA,YA] = enkf1d_lorenz96(n,N,steps,f_cov);
         RMSE(:,i,j) = sum((XA - YA).^2).^0.5;
     end
     fprintf('\n')
