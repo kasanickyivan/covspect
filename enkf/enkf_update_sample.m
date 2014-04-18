@@ -9,7 +9,7 @@ function XA=enkf_update_sample(XF,XO,A)
 %   XO - forecast state of the observed variable
 %   A -  weighted inovation (see enkf_winov_diag.m)
  
-    N = size(XF,2);
+  %  N = size(XF,2);
     C = cov_sample(XF,XO);
     XA = XF - C * A;
     
