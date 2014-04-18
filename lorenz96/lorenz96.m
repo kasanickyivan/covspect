@@ -1,20 +1,23 @@
-function out=lorenz96(u,dt,J,F,kappa)
+function out=lorenz96(u,dt,F,kappa,ts)
 % solving Lorenz 96 equation with J variables
 % dx_j/dt = (1/kappa)*(x_{j-1}(x_{j+1}-x_{j-2})-x_j+F)
 %
 % in:
 % u     : X_{t}
 % dt    : time step
-% J     : length of the state
 % F     : forcing term of the model
 % kappa 
+% ts    : number of timesteps
 % The trajectories are compute using the 
 % fourth-order Runge-Kutta method
 % it gives the iteration after a time step dt
-% out    - updated solution X_{t+dt}
-
-aux     = rk4(u,dt,F,J,kappa);
-out   = u(:) + aux;
+% out    : updated solution X_{t+dt*ts}
+    J = length(u);  %length of the state
+    for ts_ind = 1:ts
+        aux = rk4(u,dt,F,J,kappa);
+        u = u + aux;
+    end
+out   = u;
 
 function deltay = rk4(Xold,dt,F,J,kappa)
 Xold = Xold(:);
