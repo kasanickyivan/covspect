@@ -1,10 +1,10 @@
-%%
+function X=transf2d(X,trans_f)
 %Two dimensional transformation. 
 %
 %   function X=transf2d(X,trans_f)
-%   X - 4 dimensional array (3 dim variables, 4th dim replications)
+%   X - 4 dimensional array (3rd dim variables, 4th dim replications)
 %   trans_f - function handle - 1D transformation  
-function X=transf2d(X,trans_f)
+
     [nx,ny,nvar,reps]=size(X);
     for rep_ind = 1:reps
         for var_ind = 1:nvar
