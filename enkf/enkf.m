@@ -4,8 +4,8 @@ function XA = enkf(XF,var_dims,winov_f,update_f)
 % 
 % Kalman formula for i-th variable and each ensemble:
 %
-%   X^a_i = X_i - P_{i1}(P{11}+R)^{-1}(X_1-D)
-%         = X_i - P_{i1}A, where A = (P{11}+R)^{-1}(X_1-D)
+%   X^a_i = X_i - P_{i1}*A
+%         where A = H^T(HP{11}H^T+R)^{-1}(HX_1-D)
 %       P_{ij} covariance between i-th and j-th variable
 %       R data error matrix%     
 %
