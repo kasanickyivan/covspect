@@ -21,7 +21,7 @@ function XA = enkf(XF,var_dims,winov_f,update_f)
     % variable index to
     vit = cumsum(var_dims);
     % variable index from
-    vif = [1 vit(1:length(vit)-1)+1]; 
+    vif = [1; vit(1:length(vit)-1)+1]; 
     
     % analysis enseble 
     XA = zeros(size(XF));

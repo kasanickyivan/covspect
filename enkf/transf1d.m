@@ -1,11 +1,14 @@
 function X=transf1d(X,trans_f)
-%   transform columns using trans_f function
+%   %Two dimensional transformation. 
 %
 %   in:
-%   X   :   2d array
-%   trans_f     :   (function handle) transfomration function
-    [n,N]=size(X);
-    for N_ind = 1:N
-        X(:,N_ind) = trans_f(X(:,N_ind));
+%   X - 3 dimensional array (2nd dim variables, 3rd dim replications)
+%   trans_f - function handle - 1D transformation  
+    
+    [~,nvar,reps]=size(X);
+    for rep_ind = 1:reps
+        for var_ind = 1:nvar
+            X(:,var_ind,rep_ind) = trans_f(X(:,var_ind,rep_ind));
+        end
      end
 end

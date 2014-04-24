@@ -55,7 +55,7 @@ function[BIAS,MAE,RMSE]=enkf_lorenz96_test(n,N,ipv,r,nac,reps,ts)
             R = Y - XA;
             bias(sc_ind,:,rep_ind) = mean(R,1);
             mae(sc_ind,:,rep_ind) = mean(abs(R),1);
-            rmse(sc_ind,:,rep_ind) = mean(R.^2,1);
+            rmse(sc_ind,:,rep_ind) = mean(R.^2,1).^(0.5);
         end
         fprintf('.');
     end

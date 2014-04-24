@@ -1,10 +1,9 @@
-function [Y,XA]=enkf_lorenz_augmented(Yi,Xi,m,r,ts,nac,l_f,t_f,it_f,winov_f,update_f)
-%   EnKF simulation using lorenz model.
+function [Y,XA]=enkf_swe(Yi,Xi,r,ts,nac,_f,t_f,it_f,winov_f,update_f)
+%   EnKF simulation using SWE model.
 %   
 %   in:
-%   Yi  :   initial observation
+%   Yi   :   initial observation
 %   Xi  :   initial ensemble 
-%   m   :   mask vector
 %   r   :   variance of observed data
 %   ts  :   time steps between each assimilation cycle, vector of length nac, 
 %           between i an i+1 analysis the model is evolved usinngs ts(i) time
@@ -25,34 +24,21 @@ function [Y,XA]=enkf_lorenz_augmented(Yi,Xi,m,r,ts,nac,l_f,t_f,it_f,winov_f,upda
     if length(ts) ~= nac
         ts = repmat(ts(1),1,nac);
     end
-    [n,N] = size(Xi);
+    [n,~,nvar,N] = size(Xi);
     
-    XA = zeros(n,N,nac+1);
-    Y = zeros(n,nac+1);
-    %mask matrix
-    M = repmat(m,1,N);
-    Xaug = zeros(n,2,N);
-    XA(:,:,1) = Xi;
-    Y(:,1) = Yi;
+    XA = zeros(n,n,N,nac+1);
+    Y = zeros(n,n,nac+1);
+    XA(:,:,:,1) = Xi;
+    Y(:,:,1) = Yi;
     for ac_ind = 2:nac+1
-       Y(:,ac_ind) = l_f(Y(:,ac_ind-1),ts);
+       Y(:,ac_ind) = l_f(Y(:,:,ac_ind-1),ts);
        for N_ind = 1:N
-            XA(:,N_ind,ac_ind) = l_f(XA(:,N_ind,ac_ind-1),ts(ac_ind-1));
+            XA(:,N_ind,ac_ind) = l_f(XA(:,:,N_ind,ac_ind-1),ts(ac_ind-1));
        end
-       D = repmat(Y(:,ac_ind),1,N)+randn(n,N)*sqrt(r);
-       %augment state - zeroes wheres no observation
-       Xaug(:,1,:) = XA(:,:,ac_ind).*M;
-       Xaug(:,2,:) = XA(:,:,ac_ind); 
-       D = (D.*M);
+       D = repmat(Y(:,:,ac_ind),1,N)+randn(n,N)*sqrt(r);
        D = t_f(D);
-       for var_ind = 1:2
-            Xaug(:,var_ind,:) = t_f(squeeze(Xaug(:,var_ind,:)));
-       end
-       % pack state 
-       X = reshape(Xaug,2*n,N);
-       X = enkf(X,[n n] ,@(x) winov_f(x,D), update_f );
-       j = n+1:2*n;
-       % transform back just the second variable 
-       XA(:,:,ac_ind) = real(it_f(squeeze(X(j,:))));
+       X = t_f(XA(:,:,ac_ind));
+       X = enkf(X,n,@(x) winov_f(x,D), {update_f} );
+       XA(:,:,ac_ind) = real(it_f(X));
     end
 end
