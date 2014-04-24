@@ -44,9 +44,9 @@ function [X,Y] = enkf_sim_2d(Xi,Yi,nac,scn)
             X(:,:,:,N_ind,ac_ind) = m_f(X(:,:,:,N_ind,ac_ind-1));
         end
         % data perturbation
-        D = repmat(Y(:,:,1,ac_ind),1,1,N) + randn(nx,ny,N)*sqrt(r);
+        D = repmat(Y(:,:,1,ac_ind), [1 1 N]) + randn(nx,ny,N)*sqrt(r);
         % null, where is no observation
-        D = D .* repmat(M,1,1,N);
+        D = D .* repmat(M, [1 1 N]);
         % augmentation of state vector
         XAG= a_f(X(:,:,:,:,ac_ind),M);
         % transformation
