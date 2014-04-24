@@ -12,5 +12,5 @@ function Y=augs2d(X,M)
     [nx,ny,nvar,N] = size(X);
     Y = zeros(nx,ny,nvar+1,N);
     Y(:,:,2:nvar+1,:) = X;
-    Y(:,:,1,:) = squeeze(X(:,:,1,:)) .* repmat(M,1,1,N);
+    Y(:,:,1,:) = squeeze(X(:,:,1,:)) .* repmat(M,[1 1 N]);
 end
