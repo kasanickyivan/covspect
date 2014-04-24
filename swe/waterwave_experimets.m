@@ -7,7 +7,7 @@ init_h =10;
 dw_min=6;dw_max=6;
 dh_min=6;dh_max=6;
 bdd=10;
-ts=10;
+ts=2;
 init_ts=2000;
 init_d=1;
 per_d = 1e6;
