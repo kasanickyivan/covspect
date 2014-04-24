@@ -125,7 +125,7 @@ function  exp_lorenz_enkf(n,N,no)
     print('-dpng', ['img/' file_out '.png']);
     
     file_out_mat = sprintf('mat/lorenz96_n%g_N%g_no%g.mat',n,N,no); 
-    save file_out_mat n N no BIAS RMSE MAE ;
+    save file_out_mat n N no BIAS RMSE MAE 
 end
       
 

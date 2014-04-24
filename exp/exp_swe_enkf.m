@@ -135,7 +135,7 @@ function exp_swe_enkf(N,ts,no)
     
         img_file = sprintf('swe_v%g_n%g_N%g_no%g_ts%g',var_ind,n,N,no,ts);
 
-        savefig(['img/' img_file '.fig']);
+       % savefig(['img/' img_file '.fig']);
         print('-dpng', ['img/' img_file '.png']);
     end
     
