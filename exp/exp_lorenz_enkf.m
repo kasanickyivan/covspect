@@ -121,7 +121,7 @@ function  exp_lorenz_enkf(n,N,no)
     
     file_out = sprintf('lorenz96_n%g_N%g_no%g',n,N,no);
 
-    savefig(['img/' file_out '.fig']);
+    %savefig(['img/' file_out '.fig']);
     print('-dpng', ['img/' file_out '.png']);
     
     file_out_mat = sprintf('mat/%s.mat',file_out); 
