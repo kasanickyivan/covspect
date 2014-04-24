@@ -84,7 +84,7 @@ function exp_swe_enkf(N,ts,no)
         % initializationa
         U = init_swe(n,ih,dw,dh,mbd,dt,dx,dy);
         Xi = zeros(n,n,3,N);
-        Xi(:,:,:,:) = repmat(U,1,1,1,N) + randn(n,n,3,N)*sqrt(r);
+        Xi(:,:,:,:) = repmat(U,[1 1 1 N]) + randn(n,n,3,N)*sqrt(r);
         Yi = init_swe(n,ih,dw,dh,mbd,dt,dx,dy); 
         fprintf('%g/%g',rep_ind,reps);
         for scn_ind = 1:length(scn)
