@@ -112,7 +112,7 @@ function  exp_lorenz_enkf(n,N,no)
     xlabel('Assimilation step');
     title('RMSE');
     
-    ha = axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0 1],...
+    axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0 1],...
         'Box','off','Visible','off','Units','normalized', 'clipping' , 'off');
     main_title = sprintf('Lorenz96 - n %g - N %g - number of observed points %g \nEnKF is done using observation of full state!!!',...
                         n,N,no);
@@ -121,11 +121,15 @@ function  exp_lorenz_enkf(n,N,no)
     
     file_out = sprintf('lorenz96_n%g_N%g_no%g',n,N,no);
 
+    [~,~] = mkdir('img');
     %savefig(['img/' file_out '.fig']);
+    
     print('-dpng', ['img/' file_out '.png']);
     
+    % save results for future analysis
+    [~,~]=mkdir('mat');
     file_out_mat = sprintf('mat/lorenz96_n%g_N%g_no%g.mat',n,N,no); 
-    save file_out_mat n N no BIAS RMSE MAE 
+    save(file_out_mat,'n','N','no','BIAS','RMSE','MAE');
 end
       
 
