@@ -6,7 +6,7 @@ function exp_swe_enkf(N,ts,no)
 %   ts  :   time step between assimilations
 %   no  :   number of observations, observations are no matrix no x no
 
-    reps = 20;
+    reps = 5;
     n = 32;        %length of state vector          
     r = 0.0001;        %variance of the observations
     M = zeros(n);
@@ -27,8 +27,8 @@ function exp_swe_enkf(N,ts,no)
     L=4;
 
 
-    scn = cell(4);
-    scn_names = {'FFT','DWT diag CC','DWT sample CC','EnKF, H=I'};
+    scn = cell(3);
+    scn_names = {'FFT','DWT','EnKF, H=I'};
 
     scn{1} =cell(9);
     % Transoformation to fourier space and diagonal approximation.
@@ -59,31 +59,16 @@ function exp_swe_enkf(N,ts,no)
                  @(x,o,a) enkf_update_diag(x,o,a),...
                  @(x,o,a) enkf_update_diag(x,o,a),...
                  @(x,o,a) enkf_update_diag(x,o,a)};
-    % Transoformation to wavelet space, diagonal approximation of covariance,
-    % sample cross-covariances.
-    scn{3} = cell(9);
-    scn{3}{1} = M;                                         
+    % Standart EnKF with full observations.        
+    scn{3}{1} = ones(n,n);                                         
     scn{3}{2} = r;                                         
     scn{3}{3} = @(x) waterwave2(x,dt,dx,dy,ts);            
-    scn{3}{4} = @(x,m) augs2d(x,m);                        
-    scn{3}{5} = @(x) reds2d(x);                            
-    scn{3}{6} = @(x) transf2d(x,@(y) FWT_PO(y,L,qmf));     
-    scn{3}{7} = @(x) transf2d(x,@(y) IWT_PO(y,L,qmf));     
-    scn{3}{8} = @(x,d,r) enkf_winov_diag(x,d,r);           
-    scn{3}{9} = {@(x,o,a) enkf_update_diag(x,o,a),...
-                 @(x,o,a) enkf_update_diag(x,o,a),...
-                 @(x,o,a) enkf_update_sample(x,o,a),...
-                 @(x,o,a) enkf_update_sample(x,o,a)}; 
-    % Standart EnKF with full observations.        
-    scn{4}{1} = ones(n,n);                                         
-    scn{4}{2} = r;                                         
-    scn{4}{3} = @(x) waterwave2(x,dt,dx,dy,ts);            
-    scn{4}{4} = @(x,m) x;                        
-    scn{4}{5} = @(x) x;                            
-    scn{4}{6} = @(x) x;     
-    scn{4}{7} = @(x) x;     
-    scn{4}{8} = @(x,d,r) enkf_winov_sample(x,sparse(eye(n*n)),d,r);           
-    scn{4}{9} = {@(x,o,a) enkf_update_sample(x,o,a),...
+    scn{3}{4} = @(x,m) x;                        
+    scn{3}{5} = @(x) x;                            
+    scn{3}{6} = @(x) x;     
+    scn{3}{7} = @(x) x;     
+    scn{3}{8} = @(x,d,r) enkf_winov_sample(x,sparse(eye(n*n)),d,r);           
+    scn{3}{9} = {@(x,o,a) enkf_update_sample(x,o,a),...
                  @(x,o,a) enkf_update_sample(x,o,a),...
                  @(x,o,a) enkf_update_sample(x,o,a),...
                  @(x,o,a) enkf_update_sample(x,o,a)};     
