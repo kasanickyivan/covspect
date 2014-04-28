@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ts=5
-for no in 4
+for no in 4 8 16 
 do
 	for N in 4 8 16
 	do
