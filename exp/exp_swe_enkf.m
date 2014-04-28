@@ -6,12 +6,12 @@ function exp_swe_enkf(N,ts,no)
 %   ts  :   time step between assimilations
 %   no  :   number of observations, observations are no matrix no x no
 
-    reps = 5;
+    reps = 20;
     n = 32;        %length of state vector          
     r = 0.0001;        %variance of the observations
     M = zeros(n);
     M(1:no,1:no)=1;     % mask matrix  
-    nac = 15;       % number of assimilation cyccles
+    nac = 20;       % number of assimilation cyccles
 
 
     %arguments swe function
