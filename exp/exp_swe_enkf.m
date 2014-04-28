@@ -8,18 +8,18 @@ function exp_swe_enkf(N,ts,no)
 
     reps = 50;
     n = 64;        %length of state vector          
-    r = 0.1;        %variance of the observations
+    r = 0.0001;        %variance of the observations
     M = zeros(n);
     M(1:no,1:no)=1;     % mask matrix  
     nac = 15;       % number of assimilation cyccles
 
 
     %arguments swe function
-    dt=0.01;dx=1;dy=1;
+    dt=0.01;dx=5;dy=5;
     %initial condition to swe
-    ih = 3; %initial water height (water level)
+    ih = 1; %initial water height (water level)
     dw = 30; %width of drop at begining
-    dh = 3; % height of intitial drop
+    dh = 1; % height of intitial drop
     mbd = 10; % minimal boundary distance 
 
     %argument to Coiflets 
@@ -27,8 +27,8 @@ function exp_swe_enkf(N,ts,no)
     L=4;
 
 
-    scn = cell(3);
-    scn_names = {'FFT','DWT','EnKF'};
+    scn = cell(4);
+    scn_names = {'FFT','DWT diag CC','DWT sample CC','EnKF, H=I'};
 
     scn{1} =cell(9);
     % Transoformation to fourier space and diagonal approximation.
@@ -58,17 +58,32 @@ function exp_swe_enkf(N,ts,no)
     scn{2}{9} = {@(x,o,a) enkf_update_diag(x,o,a),...
                  @(x,o,a) enkf_update_diag(x,o,a),...
                  @(x,o,a) enkf_update_diag(x,o,a),...
-                 @(x,o,a) enkf_update_diag(x,o,a)};        
-    % Standart EnKF with full observations.        
-    scn{3}{1} = ones(n,n);                                         
+                 @(x,o,a) enkf_update_diag(x,o,a)};
+    % Transoformation to wavelet space, diagonal approximation of covariance,
+    % sample cross-covariances.
+    scn{3} = cell(9);
+    scn{3}{1} = M;                                         
     scn{3}{2} = r;                                         
     scn{3}{3} = @(x) waterwave2(x,dt,dx,dy,ts);            
-    scn{3}{4} = @(x,m) x;                        
-    scn{3}{5} = @(x) x;                            
-    scn{3}{6} = @(x) x;     
-    scn{3}{7} = @(x) x;     
-    scn{3}{8} = @(x,d,r) enkf_winov_sample(x,sparse(eye(n*n)),d,r);           
-    scn{3}{9} = {@(x,o,a) enkf_update_sample(x,o,a),...
+    scn{3}{4} = @(x,m) augs2d(x,m);                        
+    scn{3}{5} = @(x) reds2d(x);                            
+    scn{3}{6} = @(x) transf2d(x,@(y) FWT_PO(y,L,qmf));     
+    scn{3}{7} = @(x) transf2d(x,@(y) IWT_PO(y,L,qmf));     
+    scn{3}{8} = @(x,d,r) enkf_winov_diag(x,d,r);           
+    scn{3}{9} = {@(x,o,a) enkf_update_diag(x,o,a),...
+                 @(x,o,a) enkf_update_diag(x,o,a),...
+                 @(x,o,a) enkf_update_sample(x,o,a),...
+                 @(x,o,a) enkf_update_sample(x,o,a)}; 
+    % Standart EnKF with full observations.        
+    scn{4}{1} = ones(n,n);                                         
+    scn{4}{2} = r;                                         
+    scn{4}{3} = @(x) waterwave2(x,dt,dx,dy,ts);            
+    scn{4}{4} = @(x,m) x;                        
+    scn{4}{5} = @(x) x;                            
+    scn{4}{6} = @(x) x;     
+    scn{4}{7} = @(x) x;     
+    scn{4}{8} = @(x,d,r) enkf_winov_sample(x,sparse(eye(n*n)),d,r);           
+    scn{4}{9} = {@(x,o,a) enkf_update_sample(x,o,a),...
                  @(x,o,a) enkf_update_sample(x,o,a),...
                  @(x,o,a) enkf_update_sample(x,o,a),...
                  @(x,o,a) enkf_update_sample(x,o,a)};     
@@ -140,7 +155,7 @@ function exp_swe_enkf(N,ts,no)
     end
     
     file_out_mat = sprintf('mat/swe_n%g_N%g_no%g_ts%g.mat',n,N,no,ts); 
-    save file_out_mat n N no ts BIAS RMSE MAE 
+    save(file_out_mat,'n','N','no','ts','BIAS','RMSE','MAE'); 
 
 end
 % 
