@@ -7,7 +7,7 @@ function exp_swe_enkf(N,ts,no)
 %   no  :   number of observations, observations are no matrix no x no
 
     reps = 20;
-    n = 32;        %length of state vector          
+    n = 64;        %length of state vector          
     r = 0.0001;        %variance of the observations
     M = zeros(n);
     M(1:no,1:no)=1;     % mask matrix  
@@ -18,17 +18,17 @@ function exp_swe_enkf(N,ts,no)
     dt=0.01;dx=5;dy=5;
     %initial condition to swe
     ih = 1; %initial water height (water level)
-    dw = 15; %width of drop at begining
+    dw = 30; %width of drop at begining
     dh = 1; % height of intitial drop
-    mbd = 5; % minimal boundary distance 
+    mbd = 10; % minimal boundary distance 
 
     %argument to Coiflets 
     qmf=MakeONFilter('Coiflet',2);
     L=4;
 
 
-    scn = cell(3);
-    scn_names = {'FFT','DWT','EnKF, H=I'};
+    scn = cell(2);
+    scn_names = {'FFT','DWT'};%,'EnKF, H=I'};
 
     scn{1} =cell(9);
     % Transoformation to fourier space and diagonal approximation.
@@ -60,18 +60,18 @@ function exp_swe_enkf(N,ts,no)
                  @(x,o,a) enkf_update_diag(x,o,a),...
                  @(x,o,a) enkf_update_diag(x,o,a)};
     % Standart EnKF with full observations.        
-    scn{3}{1} = ones(n,n);                                         
-    scn{3}{2} = r;                                         
-    scn{3}{3} = @(x) waterwave2(x,dt,dx,dy,ts);            
-    scn{3}{4} = @(x,m) x;                        
-    scn{3}{5} = @(x) x;                            
-    scn{3}{6} = @(x) x;     
-    scn{3}{7} = @(x) x;     
-    scn{3}{8} = @(x,d,r) enkf_winov_sample(x,sparse(eye(n*n)),d,r);           
-    scn{3}{9} = {@(x,o,a) enkf_update_sample(x,o,a),...
-                 @(x,o,a) enkf_update_sample(x,o,a),...
-                 @(x,o,a) enkf_update_sample(x,o,a),...
-                 @(x,o,a) enkf_update_sample(x,o,a)};     
+%     scn{3}{1} = ones(n,n);                                         
+%     scn{3}{2} = r;                                         
+%     scn{3}{3} = @(x) waterwave2(x,dt,dx,dy,ts);            
+%     scn{3}{4} = @(x,m) x;                        
+%     scn{3}{5} = @(x) x;                            
+%     scn{3}{6} = @(x) x;     
+%     scn{3}{7} = @(x) x;     
+%     scn{3}{8} = @(x,d,r) enkf_winov_sample(x,sparse(eye(n*n)),d,r);           
+%     scn{3}{9} = {@(x,o,a) enkf_update_sample(x,o,a),...
+%                  @(x,o,a) enkf_update_sample(x,o,a),...
+%                  @(x,o,a) enkf_update_sample(x,o,a),...
+%                  @(x,o,a) enkf_update_sample(x,o,a)};     
 
 
          
