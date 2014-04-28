@@ -18,9 +18,9 @@ function exp_swe_enkf(N,ts,no)
     dt=0.01;dx=5;dy=5;
     %initial condition to swe
     ih = 1; %initial water height (water level)
-    dw = 30; %width of drop at begining
+    dw = 15; %width of drop at begining
     dh = 1; % height of intitial drop
-    mbd = 10; % minimal boundary distance 
+    mbd = 5; % minimal boundary distance 
 
     %argument to Coiflets 
     qmf=MakeONFilter('Coiflet',2);
