@@ -6,9 +6,9 @@ function exp_swe_enkf(N,ts,no)
 %   ts  :   time step between assimilations
 %   no  :   number of observations, observations are no matrix no x no
 
-    reps = 20;
+    reps = 5;
     n = 32;        %length of state vector          
-    r = 0.0001;        %variance of the observations
+    r = 1000;        %variance of the observations
     M = zeros(n);
     M(1:no,1:no)=1;     % mask matrix  
     nac = 20;       % number of assimilation cyccles
@@ -18,9 +18,9 @@ function exp_swe_enkf(N,ts,no)
     dt=50;dx=150000;dy=150000;
     %initial condition to swe
     ih = 10000; %initial water height (water level)
-    dw = 20; %width of drop at begining
-    dh = 20; % height of intitial drop
-    mbd = 5; % minimal boundary distance 
+    dw = 15; %width of drop at begining
+    dh = 1000; % height of intitial drop
+    mbd = 0; % minimal boundary distance 
 
     %argument to Coiflets 
     qmf=MakeONFilter('Coiflet',2);
