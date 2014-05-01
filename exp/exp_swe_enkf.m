@@ -8,14 +8,14 @@ function exp_swe_enkf(N,ts,no)
 
     reps = 25;
     n = 64;        %length of state vector          
-    r = 1000;        %variance of the observations
+    r = 500;        %variance of the observations
     M = zeros(n);
     M(1:no,1:no)=1;     % mask matrix  
     nac = 25;       % number of assimilation cyccles
 
 
     %arguments swe function
-    dt=10;dx=150000;dy=150000;
+    dt=1;dx=150000;dy=150000;
     %initial condition to swe
     ih = 10000; %initial water height (water level)
     dw = 15; %width of drop at begining
