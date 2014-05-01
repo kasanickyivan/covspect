@@ -1,5 +1,8 @@
 function  exp_lorenz_enkf(n,N,no)
-%
+%   Experiments file - assimilation to lorenz 96 model, 3 scenarios
+%   (assimilation only observations on subgrid with augmenting the state
+%   and estimating the covariance by diagonal of spectral sample covaiance
+%   - using FFT, DWT, and standart EnKF with fully observed state).
 %
 %
 %       n   :  length of state vector

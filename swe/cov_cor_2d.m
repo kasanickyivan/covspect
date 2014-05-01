@@ -7,7 +7,7 @@
 %
 function [cov,loc_cov,cor,loc_cor] = cov_cor_2d(Y)
     [n,~,nvar,reps] = size(Y);
-    Y = pack_state(Y);
+    Y = pack_state2d(Y);
     % 
     Y = Y - repmat(mean(Y,2),1,reps);
     var_index = cell(nvar,1);

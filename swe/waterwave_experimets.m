@@ -2,17 +2,17 @@
 %
 %   definitions, see waterwave2 and generate_waterwave for details:
 n=64;
-reps=50;
-init_h =10;
-dw_min=6;dw_max=6;
-dh_min=6;dh_max=6;
+reps=500;
+init_h =10000;
+dw_min=40;dw_max=40;
+dh_min=1;dh_max=1;
 bdd=10;
-ts=2;
-init_ts=2000;
+ts=1;
+init_ts=10000;
 init_d=1;
 per_d = 1e6;
 
-runs=20;
+runs=1;
 Y = zeros(n,n,3,reps*runs);
 for run_ind = 1:runs
     i=(1:reps)+((run_ind-1)*reps);
@@ -20,7 +20,7 @@ for run_ind = 1:runs
         dh_max,bdd,ts,init_ts,init_d,per_d);
 end
 
-waterwave_anim(Y,0.01);
+waterwave_anim(Y,60,100);
 % adding derivatives
 Y=ww_derivatives(Y);
 %
@@ -36,12 +36,12 @@ var_index = cell(nvar,1);
 for var_ind = 1:nvar
     var_index{var_ind} = (1:n*n)+((var_ind-1)*n*n);
 end
-X = pack_state(Z);
+X = pack_state2d(Y);
 % centering 
     
 subplot(131);
 plot(mean(X(var_index{1},:),1));
-ylim([9 11]);
+%ylim([9 11]);
 xlabel('realization');ylabel('water level');title('mean water level');
 subplot(132);
 plot(mean(X(var_index{2},:),1));

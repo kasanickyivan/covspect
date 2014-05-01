@@ -1,7 +1,12 @@
 % animate result from generate_waterwave
 %
 % copied from waterwave_orig.m
-function waterwave_anim(Y,dt)
+%
+%   input:
+%       Y   :   4d array from waterwave2
+%       dt  :   time diference between samples
+%       fps :   frames pre seccond 
+function waterwave_anim(Y,dt,fps)
     [surfplot,top,start,stop] = waterwave_initgraphics(Y);
     rep = size(Y,4);
     nstep = 1;
@@ -12,7 +17,7 @@ function waterwave_anim(Y,dt)
         set(top,'string',sprintf('t = %6.2f',t))
         drawnow
         nstep = nstep+1;
-        pause(dt);
+        pause(1/fps);
     end
 end
       

@@ -7,7 +7,7 @@ function exp_swe_enkf(N,ts,no)
 %   no  :   number of observations, observations are no matrix no x no
 
     reps = 20;
-    n = 64;        %length of state vector          
+    n = 32;        %length of state vector          
     r = 0.0001;        %variance of the observations
     M = zeros(n);
     M(1:no,1:no)=1;     % mask matrix  
@@ -15,12 +15,12 @@ function exp_swe_enkf(N,ts,no)
 
 
     %arguments swe function
-    dt=0.01;dx=5;dy=5;
+    dt=50;dx=150000;dy=150000;
     %initial condition to swe
-    ih = 1; %initial water height (water level)
-    dw = 30; %width of drop at begining
-    dh = 1; % height of intitial drop
-    mbd = 10; % minimal boundary distance 
+    ih = 10000; %initial water height (water level)
+    dw = 20; %width of drop at begining
+    dh = 20; % height of intitial drop
+    mbd = 5; % minimal boundary distance 
 
     %argument to Coiflets 
     qmf=MakeONFilter('Coiflet',2);
