@@ -8,7 +8,8 @@ function exp_swe_enkf(N,ts,no)
 
     reps = 25;
     n = 64;        %length of state vector          
-    r = 500;        %variance of the observations
+    r = 100;        %variance of the observations
+    r_pert = 1000;   % variance of initial perturbation
     M = zeros(n);
     M(1:no,1:no)=1;     % mask matrix  
     nac = 25;       % number of assimilation cyccles
@@ -18,7 +19,7 @@ function exp_swe_enkf(N,ts,no)
     dt=1;dx=150000;dy=150000;
     %initial condition to swe
     ih = 10000; %initial water height (water level)
-    dw = 15; %width of drop at begining
+    dw = 32; %width of drop at begining
     dh = 1000; % height of intitial drop
     mbd = 0; % minimal boundary distance 
 
@@ -82,9 +83,9 @@ function exp_swe_enkf(N,ts,no)
 
     for rep_ind = 1:reps
         % initializationa
-        U = init_swe(n,ih,dw,dh,mbd,dt,dx,dy);
+        U = init_swe(n,ih,dw,dh*(rand()+1),mbd,dt,dx,dy);
         Xi = zeros(n,n,3,N);
-        Xi(:,:,:,:) = repmat(U,[1 1 1 N]) + randn(n,n,3,N)*sqrt(r);
+        Xi(:,:,:,:) = repmat(U,[1 1 1 N]) + randn(n,n,3,N)*sqrt(r_pert);
         Yi = init_swe(n,ih,dw,dh,mbd,dt,dx,dy); 
         fprintf('%g/%g',rep_ind,reps);
         for scn_ind = 1:length(scn)
@@ -128,7 +129,7 @@ function exp_swe_enkf(N,ts,no)
 
         ha = axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0 1],...
         'Box','off','Visible','off','Units','normalized', 'clipping' , 'off');
-        main_title = sprintf('SWE - variable no.%g - n %g - N %g - no. of obs. p %g - ts %g \nEnKF is done using observation of full state!!!',...
+        main_title = sprintf('SWE - variable no.%g - n %g - N %g - no. of obs. p %g - ts %g',...
                         var_ind,n,N,no,ts);
         text(0.5, 1,main_title,...
         'HorizontalAlignment' ,'center','VerticalAlignment', 'top')
