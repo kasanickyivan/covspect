@@ -5,9 +5,14 @@ function exp_swe_enkf(N,ts,no)
 %   N   :   number of ensembles
 %   ts  :   time step between assimilations
 %   no  :   number of observations, observations are no matrix no x no
+%
+%
+%   SWE model is assumed to be a symplification of real atmospheric flow.
+%   The dimensions are set so that the size of the area is simimar to the
+%   area of a wholw globe. 
 
-    reps = 25;
-    n = 64;        %length of state vector          
+    reps = 10;
+    n = 32;        %length of state vector          
     r = 100;        %variance of the observations
     r_pert = 1000;   % variance of initial perturbation
     M = zeros(n);
@@ -19,7 +24,7 @@ function exp_swe_enkf(N,ts,no)
     dt=1;dx=150000;dy=150000;
     %initial condition to swe
     ih = 10000; %initial water height (water level)
-    dw = 32; %width of drop at begining
+    dw = 16; %width of drop at begining
     dh = 1000; % height of intitial drop
     mbd = 0; % minimal boundary distance 
 
@@ -127,7 +132,7 @@ function exp_swe_enkf(N,ts,no)
         xlabel('Assimilation step');
         title('RMSE');
 
-        ha = axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0 1],...
+         axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0 1],...
         'Box','off','Visible','off','Units','normalized', 'clipping' , 'off');
         main_title = sprintf('SWE - variable no.%g - n %g - N %g - no. of obs. p %g - ts %g',...
                         var_ind,n,N,no,ts);

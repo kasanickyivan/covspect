@@ -1,6 +1,9 @@
 % Experiments with 'true' covariances in SWE model
 %
-%   definitions, see waterwave2 and generate_waterwave for details:
+% Our goal is to use SWE as a primitive model of atmospheric flow. Therefore 
+% the e
+%
+% See waterwave2 and generate_waterwave for details about all variables:
 n=64;
 reps=500;
 init_h =10000;

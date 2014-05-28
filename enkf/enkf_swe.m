@@ -1,4 +1,4 @@
-function [Y,XA]=enkf_swe(Yi,Xi,r,ts,nac,_f,t_f,it_f,winov_f,update_f)
+function [Y,XA]=enkf_swe(Yi,Xi,r,ts,nac,l_f,t_f,it_f,winov_f,update_f)
 %   EnKF simulation using SWE model.
 %   
 %   in:

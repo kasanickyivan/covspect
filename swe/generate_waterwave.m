@@ -19,7 +19,7 @@ function Y=generate_waterwave(n,reps,h,dw_min,dw_max,dh_min,dh_max,bdd,ts,init_t
     nvar=3; %number of variables foe EnKF
     dx=150000;   %argument to waterwave2
     dy=150000;   %argument to waterwave2
-    dt=5;%argument to waterwave2
+    dt=1;%argument to waterwave2
 
     Y=zeros(n,n,nvar,reps);Y(:,:,1,1)=ones(n,n)*h;
     for init_ind = 1:init_d

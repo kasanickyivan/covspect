@@ -1,4 +1,4 @@
-n = 64;        %length of state vector
+n = 32;        %length of state vector
 N = 4;          %number of ensebles 
 ts = 1;       %time step between assismilations
 r = 0.1;        %variance of the observations
@@ -8,12 +8,12 @@ nac = 5;       % number of assimilation cyccles
 
 
 %arguments swe function
-dt=0.01;dx=1;dy=1;
+dt=1;dx=150000;dy=150000;
 %initial condition to swe
-ih = 3; %initial water height (water level)
-dw = 30; %width of drop at begining
-dh = 3; % height of intitial drop
-mbd = 10; % minimal boundary distance 
+ih = 10000; %initial water height (water level)
+dw = 15; %width of drop at begining
+dh = 1000; % height of intitial drop
+mbd = 5; % minimal boundary distance 
 
 %argument to Coiflets 
 qmf=MakeONFilter('Coiflet',2);
@@ -80,18 +80,18 @@ scn{4}{9} = {@(x,o,a) enkf_update_sample(x,o,a),...
          
 U = init_swe(n,ih,dw,dh,mbd,dt,dx,dy);
 Xi = zeros(n,n,3,N);
-Xi(:,:,:,:) = repmat(U,1,1,1,N) + randn(n,n,3,N)*sqrt(r);
+Xi(:,:,:,:) = repmat(U,[1 1 1 N]) + randn(n,n,3,N)*sqrt(r);
 Yi = init_swe(n,ih,dw,dh,mbd,dt,dx,dy); 
 
 
       
 [X,Y] = enkf_sim_2d(Xi,Yi,nac,scn{4}); 
-% XM = squeeze(mean(X,3));
-% Y = squeeze(Y);
-% rmse = mean((Y-XM).^(2),1).^(.5);
-% plot(rmse);
-% surface(XM);
-% 
-% 
+XM = squeeze(mean(X,3));
+Y = squeeze(Y);
+rmse = mean((Y-XM).^(2),1).^(.5);
+plot(rmse);
+surface(XM);
+
+
 
 
