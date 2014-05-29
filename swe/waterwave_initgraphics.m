@@ -1,4 +1,4 @@
-function [surfplot,top,start,stop] = waterwave_initgraphics(Y)
+function [surfplot,top] = waterwave_initgraphics(Y)
 % INITGRAPHICS  Initialize graphics for waterwave.
 % [surfplot,top,start,stop] = initgraphics(n)
 % returns handles to a surface plot, its title, and two uicontrol toggles.
@@ -19,7 +19,7 @@ function [surfplot,top,start,stop] = waterwave_initgraphics(Y)
    c = (1:n)'/n;
    cyan = [0*c c c];
    colormap(cyan)
-   top = title('Click start');
-   start = uicontrol('position',[20 20 80 20],'style','toggle','string','start');
-   stop = uicontrol('position',[120 20 80 20],'style','toggle','string','stop');
+   top = title('Shallow water equation');
+ %  start = uicontrol('position',[20 20 80 20],'style','toggle','string','start');
+ %  stop = uicontrol('position',[120 20 80 20],'style','toggle','string','stop');
 end

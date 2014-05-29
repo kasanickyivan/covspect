@@ -1,17 +1,18 @@
 % Experiments with 'true' covariances in SWE model
 %
 % Our goal is to use SWE as a primitive model of atmospheric flow. Therefore 
-% the e
+% it is very important to set the appropriate dimensions, such as
+% horizontal distances between grids, waterlevet etc.
 %
 % See waterwave2 and generate_waterwave for details about all variables:
 n=64;
-reps=500;
+reps=200;
 init_h =10000;
 dw_min=40;dw_max=40;
-dh_min=1;dh_max=1;
+dh_min=1000;dh_max=1000;
 bdd=10;
-ts=1;
-init_ts=10000;
+ts=10;
+init_ts=20000;
 init_d=1;
 per_d = 1e6;
 
@@ -23,8 +24,8 @@ for run_ind = 1:runs
         dh_max,bdd,ts,init_ts,init_d,per_d);
 end
 
-waterwave_anim(Y,60,100);
-% adding derivatives
+waterwave_anim(Y,ts,100,'img/swe_anim.gif')
+%adding derivatives
 Y=ww_derivatives(Y);
 %
 %
