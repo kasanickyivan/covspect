@@ -94,31 +94,41 @@ title('Covariance of X momentum.');
 print('img/cov_Xmom_spatial.png','-dpng')
 
 figure()
+surf(squeeze(cov_s(1,2,:,:)));
+colorbar();
+xlim([1 n*n]);ylim([1 n*n]);
+xlabel('grid point index');
+ylabel('grid point index');
+title('Covariance between water level and X momentum.');
+print('img/cov_height_Xmom_spatial.png','-dpng')
+
+figure()
 surf(squeeze(cor_s(1,2,:,:)));
 colorbar();
 xlim([1 n*n]);ylim([1 n*n]);
 xlabel('grid point index');
 ylabel('grid point index');
 title('Correlation between water level and X momentum.');
-print('img/cov_height_Xmom_spatial.png','-dpng')
+print('img/cor_height_Xmom_spatial.png','-dpng')
 
-figure()
-surf(squeeze(cor_s(4,2,:,:)));
-colorbar();
-xlim([1 n*n]);ylim([1 n*n]);
-xlabel('grid point index');
-ylabel('grid point index');
-title('Correlation water level derivation in x direction and X momentum.');
-print('img/cor_Xder_Xmom_spatial.png','-dpng')
 
-figure()
-surf(squeeze(cor_s(5,2,:,:)));
-colorbar();
-xlim([1 n*n]);ylim([1 n*n]);
-xlabel('grid point index');
-ylabel('grid point index');
-title('Correlation water level derivation in y direction and X momentum.');
-print('img/cor_Yder_Xmom_spatial.png','-dpng')
+% figure()
+% surf(squeeze(cor_s(4,2,:,:)));
+% colorbar();
+% xlim([1 n*n]);ylim([1 n*n]);
+% xlabel('grid point index');
+% ylabel('grid point index');
+% title('Correlation water level derivation in x direction and X momentum.');
+% print('img/cor_Xder_Xmom_spatial.png','-dpng')
+% 
+% figure()
+% surf(squeeze(cor_s(5,2,:,:)));
+% colorbar();
+% xlim([1 n*n]);ylim([1 n*n]);
+% xlabel('grid point index');
+% ylabel('grid point index');
+% title('Correlation water level derivation in y direction and X momentum.');
+% print('img/cor_Yder_Xmom_spatial.png','-dpng')
 
 % Fourier space
 ZF = transf2d(Z(:,:,1:3,:),@(x) dct_iv(x));
@@ -138,13 +148,21 @@ ylabel('grid point index');
 title('Covariance of X momentum in Fourier space.');
 print('img/cov_Xmom_fourier.png','-dpng')
 
+surf(squeeze(cov_f(1,2,:,:)));
+colorbar();
+xlim([1 n*n]);ylim([1 n*n]);
+xlabel('grid point index');
+ylabel('grid point index');
+title('Covariation between water level and X momentum in Fourier space.');
+print('img/cov_height_Xmom_fourier.png','-dpng')
+
 surf(squeeze(cor_f(1,2,:,:)));
 colorbar();
 xlim([1 n*n]);ylim([1 n*n]);
 xlabel('grid point index');
 ylabel('grid point index');
 title('Correlation between water level and X momentum in Fourier space.');
-print('img/cov_height_Xmom_fourier.png','-dpng')
+print('img/cor_height_Xmom_fourier.png','-dpng')
 
 % Wavelet space
 % wavelet space
@@ -167,6 +185,14 @@ ylabel('grid point index');
 title('Covariance of X momentum in wavelet space.');
 print('img/cov_Xmom_wavelet.png','-dpng')
 
+surf(squeeze(cov_w(1,2,:,:)));
+colorbar();
+xlim([1 n*n]);ylim([1 n*n]);
+xlabel('grid point index');
+ylabel('grid point index');
+title('Covariation between water level and X momentum in wavelet space.');
+print('img/cov_height_Xmom_wavelet.png','-dpng')
+ 
 surf(squeeze(cor_w(1,2,:,:)));
 colorbar();
 xlim([1 n*n]);ylim([1 n*n]);
@@ -174,5 +200,5 @@ xlabel('grid point index');
 ylabel('grid point index');
 title('Correlation between water level and X momentum in wavelet space.');
 print('img/cor_height_Xmom_wavelet.png','-dpng')
-
+ 
 
