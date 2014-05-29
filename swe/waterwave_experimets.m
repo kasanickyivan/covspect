@@ -24,7 +24,7 @@ for run_ind = 1:runs
         dh_max,bdd,ts,init_ts,init_d,per_d);
 end
 
-waterwave_anim(Y,ts,100,'img/swe_anim.gif')
+%waterwave_anim(Y,ts,100,'img/swe_anim.gif')
 %adding derivatives
 Y=ww_derivatives(Y);
 %
