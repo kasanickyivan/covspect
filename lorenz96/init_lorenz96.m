@@ -3,9 +3,7 @@ function X = init_lorenz96(n,dt,F,kappa)
 %
 %   in:
 %   n       :   lenght of lorenz vector state
-%   l_f     :   function handle, funtion to evolve the vector in time, 
-%               l_f(x,y)    :   x - state vector
-%                               y - time steps
+%   dt,F,kappa    :  arguments to lorenz96 function
     X = rand(n,1)*0.001-0.0005;
     % initial number of time steps 
     ints = 1000;
