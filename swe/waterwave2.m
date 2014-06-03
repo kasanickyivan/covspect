@@ -98,9 +98,9 @@ function [X]=waterwave2(X,dt,dx,dy,nsteps)
                        - (dt/dy)*((Vy(i-1,j).^2./Hy(i-1,j) + g/2*Hy(i-1,j).^2) - ...
                          (Vy(i-1,j-1).^2./Hy(i-1,j-1) + g/2*Hy(i-1,j-1).^2));
          
-       if all(all(isnan(H)))
-        error('Model unstable.');
-       end
+       %if all(all(isnan(H)))
+       %error('Model unstable.');
+       %end
    end
    X(:,:,1)=H(2:n+1,2:n+1);
    X(:,:,2)=U(2:n+1,2:n+1);
