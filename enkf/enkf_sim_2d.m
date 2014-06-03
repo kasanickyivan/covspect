@@ -6,7 +6,7 @@ function [X,Y] = enkf_sim_2d(Xi,Yi,nac,scn)
 %   Yi  :   initial 'true' state
 %   nac :   number of assimilation cycles
 %   scn :   'scenario' for simulation, cell array, content
-%           {1} :   mask matrix of the assimilated obseravations
+%           {1} :   mask matrix of the assimilated observations
 %           {2} :   r - variance of the observations
 %           {3} :   (function handle) function to evelve the state vector
 %           {4} :   (function handle) function to augment the state 
@@ -15,11 +15,11 @@ function [X,Y] = enkf_sim_2d(Xi,Yi,nac,scn)
 %           {6} :   (function handle) transform function
 %           {7} :   (function handle) inverse transform function
 %           {8} :   (function handle) weighted innovation function (see
-%           enkf.m for deteaels)
+%           enkf.m for details)
 %           {9} :   (cell of function handle) update function (see enkf.m
 %           for details)
 %
-    M = scn{1};     %mask matirx
+    M = scn{1};     %mask matrix
     r = scn{2};     %variance of observation    
     m_f = scn{3};   %model evolution function
     a_f = scn{4};   %augment function
