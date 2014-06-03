@@ -62,7 +62,7 @@ scn{3}{9} = {@(x,o,a) enkf_update_diag(x,o,a),...
              @(x,o,a) enkf_update_sample(x,o,a),...
              @(x,o,a) enkf_update_sample(x,o,a)};     
          
-scn{4}{1} = ones(n,n);                                         
+scn{4}{1} = M;                                         
 scn{4}{2} = r;                                         
 scn{4}{3} = @(x) waterwave2(x,dt,dx,dy,ts);            
 scn{4}{4} = @(x,m) x;                        

@@ -11,8 +11,8 @@ function exp_swe_enkf(N,ts,no)
 %   The dimensions are set so that the size of the area is simimar to the
 %   area of a wholw globe. 
 
-    reps = 10;
-    n = 32;        %length of state vector          
+    reps = 50;
+    n = 64;        %length of state vector          
     r = 100;        %variance of the observations
     r_pert = 1000;   % variance of initial perturbation
     M = zeros(n);
@@ -34,8 +34,8 @@ function exp_swe_enkf(N,ts,no)
     L=4;
 
 
-    scn = cell(2);
-    scn_names = {'FFT','DWT'};%,'EnKF, H=I'};
+    scn = cell(3);
+    scn_names = {'FFT','DWT','EnKF'};%,'EnKF, H=I'};
 
     scn{1} =cell(9);
     % Transoformation to fourier space and diagonal approximation.
@@ -66,19 +66,24 @@ function exp_swe_enkf(N,ts,no)
                  @(x,o,a) enkf_update_diag(x,o,a),...
                  @(x,o,a) enkf_update_diag(x,o,a),...
                  @(x,o,a) enkf_update_diag(x,o,a)};
-    % Standart EnKF with full observations.        
-%     scn{3}{1} = ones(n,n);                                         
-%     scn{3}{2} = r;                                         
-%     scn{3}{3} = @(x) waterwave2(x,dt,dx,dy,ts);            
-%     scn{3}{4} = @(x,m) x;                        
-%     scn{3}{5} = @(x) x;                            
-%     scn{3}{6} = @(x) x;     
-%     scn{3}{7} = @(x) x;     
-%     scn{3}{8} = @(x,d,r) enkf_winov_sample(x,sparse(eye(n*n)),d,r);           
-%     scn{3}{9} = {@(x,o,a) enkf_update_sample(x,o,a),...
-%                  @(x,o,a) enkf_update_sample(x,o,a),...
-%                  @(x,o,a) enkf_update_sample(x,o,a),...
-%                  @(x,o,a) enkf_update_sample(x,o,a)};     
+    % Standart EnKF with full observations.   
+    h = reshape(M,[n*n 1]);
+    H = sparse(diag(h));
+    Hnull = all(H==0,2);
+    H = H(~Hnull,1:n*n);
+    
+    scn{3}{1} = M;                                         
+    scn{3}{2} = r;                                         
+    scn{3}{3} = @(x) waterwave2(x,dt,dx,dy,ts);            
+    scn{3}{4} = @(x,m) x;                        
+    scn{3}{5} = @(x) x;                            
+    scn{3}{6} = @(x) x;     
+    scn{3}{7} = @(x) x;     
+    scn{3}{8} = @(x,d,r) enkf_winov_sample(x,H,d,r);           
+    scn{3}{9} = {@(x,o,a) enkf_update_sample(x,o,a),...
+                 @(x,o,a) enkf_update_sample(x,o,a),...
+                 @(x,o,a) enkf_update_sample(x,o,a),...
+                 @(x,o,a) enkf_update_sample(x,o,a)};     
 
 
          
@@ -142,7 +147,7 @@ function exp_swe_enkf(N,ts,no)
     
         img_file = sprintf('swe_v%g_n%g_N%g_no%g_ts%g',var_ind,n,N,no,ts);
 
-       % savefig(['img/' img_file '.fig']);
+        %savefig(['img/' img_file '.fig']);
         print('-dpng', ['img/' img_file '.png']);
     end
     
